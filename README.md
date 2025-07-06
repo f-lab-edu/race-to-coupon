@@ -58,24 +58,24 @@ ERD 주소
 ### API
 운영자 (Admin) API
 
-메서드	| URI	| 설명 |
--------|-------|------|
-POST | /admin/login | 로그인 |
-POST | /admin/logout | 로그아웃 | 
-POST   | /admin/coupons	| 쿠폰 생성 (등록) |
-PATCH    | /admin/coupons | 쿠폰 수정 |
-PATCH	| /admin/coupons/{couponId}	| 쿠폰 삭제(삭제 상태로 변경) |
-GET | /admin/coupons | 쿠폰 리스트 조회 |
-GET | /admin/coupons/{couponId} | 쿠폰 상세 조회 |
+메서드	| URI	                       | 설명 |
+-------|----------------------------|------|
+POST | /admin/auth/login          | 로그인 |
+POST | /admin/auth/logout         | 로그아웃 | 
+POST   | /admin/coupons	            | 쿠폰 생성 (등록) |
+PATCH    | /admin/coupons             | 쿠폰 수정 |
+PATCH	| /admin/coupons/{couponId}	 | 쿠폰 삭제(삭제 상태로 변경) |
+GET | /admin/coupons             | 쿠폰 리스트 조회 |
+GET | /admin/coupons/{couponId}  | 쿠폰 상세 조회 |
 
 사용자 (Member) API
 
-메서드	| URI | 설명|
--------|-----|----|
-POST | /user/sign-up | 회원가입 |
-POST | /user/login | 로그인 |
-POST | /user/logout | 로그아웃 |
-POST | /user/coupons | 쿠폰 발급 요청(선착순) |
+메서드	| URI                 | 설명|
+-------|---------------------|----|
+POST | /user/auth/sign-up  | 회원가입 |
+POST | /user/auth/login    | 로그인 |
+POST | /user/auth/logout   | 로그아웃 |
+POST | /user/coupons       | 쿠폰 발급 요청(선착순) |
 POST | /user/coupons/codes | 쿠폰 발급(코드 입력) |
-POST | /user/coupons/use | 쿠폰 사용 |
-GET  | /user/coupons | 쿠폰 리스트 조회(내 쿠폰) |
+POST | /user/coupons/use   | 쿠폰 사용 |
+GET  | /user/coupons       | 쿠폰 리스트 조회(내 쿠폰) |
