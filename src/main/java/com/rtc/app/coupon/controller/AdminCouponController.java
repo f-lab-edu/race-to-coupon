@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin/coupons")
+@RequestMapping("/coupons")
 public class AdminCouponController {
     private final AdminCouponService adminCouponService;
 

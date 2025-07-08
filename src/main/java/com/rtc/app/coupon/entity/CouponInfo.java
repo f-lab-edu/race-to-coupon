@@ -20,11 +20,11 @@ public class CouponInfo extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "coupon_info_key")
-    private Long couponKey;
+    @Column(name = "coupon_info_id")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_key", updatable = false, nullable = false)
+    @JoinColumn(name = "coupon_user_id", updatable = false, nullable = false)
     private User createUser;
 
     /**
@@ -88,7 +88,6 @@ public class CouponInfo extends BaseTimeEntity {
     private LocalDateTime downloadEnd;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "modify_user_key")
+    @JoinColumn(name = "modify_user_id")
     private User modifyUser;
 }
-

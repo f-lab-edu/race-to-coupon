@@ -18,15 +18,15 @@ public class CouponIssue extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "issue_key")
-    private Long issueKey;
+    @Column(name = "coupon_issue_id")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "coupon_info_key", nullable = false)
+    @JoinColumn(name = "coupon_info_id", nullable = false)
     private CouponInfo couponInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_key", nullable = false)
+    @JoinColumn(name = "coupon_user_id", nullable = false)
     private User user;
 
     @Enumerated(EnumType.STRING)
@@ -45,4 +45,3 @@ public class CouponIssue extends BaseTimeEntity {
     @Column(name = "usable_end", nullable = false)
     private LocalDateTime usableEnd;
 }
-
