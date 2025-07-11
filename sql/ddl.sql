@@ -44,8 +44,3 @@ CREATE TABLE coupon_info (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '쿠폰 생성 시간',
     modified_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '쿠폰 수정 시간'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-ALTER TABLE coupon_issue ADD CONSTRAINT fk_coupon_issue_coupon_info_id FOREIGN KEY (coupon_info_id) REFERENCES coupon_info(coupon_info_id);
-ALTER TABLE coupon_issue ADD CONSTRAINT fk_coupon_issue_coupon_user_id FOREIGN KEY (coupon_user_id) REFERENCES coupon_user(coupon_user_id);
-ALTER TABLE coupon_info ADD CONSTRAINT fk_coupon_info_coupon_user_id FOREIGN KEY (coupon_user_id) REFERENCES coupon_user(coupon_user_id);
-ALTER TABLE coupon_info ADD CONSTRAINT fk_coupon_info_modify_user_id FOREIGN KEY (modify_user_id) REFERENCES coupon_user(coupon_user_id);
