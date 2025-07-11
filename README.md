@@ -56,26 +56,34 @@ ERD 주소
         - 추후에 별도의 분리된 테이블이 필요할 수 있으나, 현재는 통합해서 관리한다.
 
 ### API
-운영자 (Admin) API
+#### 인증(운영자/사용자) API
 
-메서드	| URI	| 설명 |
--------|-------|------|
-POST | /admin/login | 로그인 |
-POST | /admin/logout | 로그아웃 | 
-POST   | /admin/coupons	| 쿠폰 생성 (등록) |
-PATCH    | /admin/coupons | 쿠폰 수정 |
-PATCH	| /admin/coupons/{couponId}	| 쿠폰 삭제(삭제 상태로 변경) |
-GET | /admin/coupons | 쿠폰 리스트 조회 |
-GET | /admin/coupons/{couponId} | 쿠폰 상세 조회 |
+| 메서드  | URI          | 설명           |
+| ---- | ------------ |--------------|
+| POST | /auth/login  | 사용자/관리자 로그인  |
+| POST | /auth/logout | 사용자/관리자 로그아웃 |
+| POST | /auth/signup | 사용자 회원가입     |
 
-사용자 (Member) API
+---------------------------------
 
-메서드	| URI | 설명|
--------|-----|----|
-POST | /user/sign-up | 회원가입 |
-POST | /user/login | 로그인 |
-POST | /user/logout | 로그아웃 |
-POST | /user/coupons | 쿠폰 발급 요청(선착순) |
-POST | /user/coupons/codes | 쿠폰 발급(코드 입력) |
-POST | /user/coupons/use | 쿠폰 사용 |
-GET  | /user/coupons | 쿠폰 리스트 조회(내 쿠폰) |
+#### 쿠폰(운영자/사용자) API
+
+##### 운영자 API
+
+| 메서드    | URI               | 설명             |
+| ------ | ----------------- |----------------|
+| POST   | /coupons          | 쿠폰 생성 (등록)     |
+| PATCH  | /coupons/{couponId} | 특정 쿠폰 수정       |
+| DELETE | /coupons/{couponId} | 특정 쿠폰 삭제 |
+| GET    | /coupons          | 쿠폰 리스트 조회(관리자용) |
+| GET    | /coupons/{couponId} | 특정 쿠폰 상세 조회    |
+
+
+##### 사용자 API
+
+| 메서드  | URI                        | 설명             |
+| ---- | -------------------------- |----------------|
+| POST | /coupons/{couponId}        | 쿠폰 발급 요청 (선착순) |
+| POST | /coupons/code              | 쿠폰 발급 요청 (코드 입력) |
+| POST | /coupons/{couponId}/redeem | 특정 쿠폰 사용       |
+| GET  | /coupons/me                | 내 쿠폰 리스트 조회    |
