@@ -1,0 +1,4 @@
+jwt:
+  secret: local2b34283bSecret25a88ec3b0cfa
+  expirationMs: 3600000
+  refreshExpirationMs: 86400000

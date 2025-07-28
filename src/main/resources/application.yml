@@ -4,9 +4,10 @@ spring:
   profiles:
     active: local
     group:
-      local: local-db
+      local: local-db, local-value
       dev: dev-db
   config:
     import:
       - "classpath:config/local/application-local-db.yml"
+      - "classpath:config/local/application-local-value.yml"
       - "classpath:config/dev/application-dev-db.yml"

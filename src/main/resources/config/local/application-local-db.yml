@@ -21,3 +21,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+redisson:
+  config: classpath:config/local/redisson-local.yml
+
+logging:
+  level:
+    org.springframework.security: TRACE

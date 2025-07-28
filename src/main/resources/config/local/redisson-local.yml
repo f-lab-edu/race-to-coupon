@@ -1,0 +1,6 @@
+singleServerConfig:
+  address: "redis://127.0.0.1:6379"
+  password: "c7c5db6ab01e"
+  connectionMinimumIdleSize: 5
+  connectionPoolSize: 10
+codec: !<org.redisson.client.codec.StringCodec> {}

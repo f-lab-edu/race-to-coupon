@@ -5,7 +5,7 @@ import com.rtc.app.coupon.type.CouponStatus;
 import com.rtc.app.coupon.type.CouponSubType;
 import com.rtc.app.coupon.type.CouponType;
 import com.rtc.app.coupon.type.DiscountType;
-import com.rtc.app.account.entity.User;
+import com.rtc.app.auth.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
