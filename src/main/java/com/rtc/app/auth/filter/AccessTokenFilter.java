@@ -5,6 +5,7 @@ import com.rtc.app.auth.dto.internal.CustomUserDetails;
 import com.rtc.app.auth.dto.internal.UserInfo;
 import com.rtc.app.auth.exception.JwtAuthenticationException;
 import com.rtc.app.auth.exception.JwtExpirationException;
+import com.rtc.app.auth.exception.MissingJwtException;
 import com.rtc.app.auth.service.authentication.JwtService;
 import com.rtc.app.auth.type.ApiAuthResponseCode;
 import com.rtc.app.common.exception.dto.ErrorResponse;
@@ -35,31 +36,37 @@ public class AccessTokenFilter extends OncePerRequestFilter {
 
     private final ObjectMapper objectMapper;
     private final JwtService jwtService;
-    private static final List<String> WHITELIST = List.of("/auth/signup");
+    private final List<String> WHITELIST = List.of("/auth/login");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String accessToken = getAccessTokenFromRequest(request);
-            if (null != accessToken && !accessToken.isBlank()) {
-                UserInfo userInfo = jwtService.getUserInfoFromAccessToken(accessToken);
-
-                List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(userInfo.getType()));
-                UserDetails userDetails = new CustomUserDetails(userInfo.getId(), userInfo.getEmail(), null, authorities);
-
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
-
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+            if (accessToken == null || accessToken.isBlank()) {
+                throw new MissingJwtException("액세스 토큰이 존재하지 않습니다.");
             }
+
+            UserInfo userInfo = jwtService.getUserInfoFromAccessToken(accessToken);
+
+            List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(userInfo.getType()));
+            UserDetails userDetails = new CustomUserDetails(userInfo.getId(), userInfo.getEmail(), null, authorities);
+
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (ExpiredJwtException e) {
-            // 로그 처리 필요
             handleException(response, new JwtExpirationException("토큰이 만료 되었습니다."));
+            // 예외 반환 후 즉시 리턴
+            return;
+        } catch (MissingJwtException e) {
+            handleException(response, e);
+            return;
         } catch (Exception e) {
-            // 로그 처리 필요
             handleException(response, new JwtAuthenticationException("인증이 실패하였습니다."));
+            return;
         }
 
         filterChain.doFilter(request, response);
@@ -80,12 +87,24 @@ public class AccessTokenFilter extends OncePerRequestFilter {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json;charset=UTF-8");
 
-        ResponseCode code = ApiAuthResponseCode.AUTHENTICATION_FAILED;
-        if (e instanceof JwtExpirationException jwtEx) {
-            code = jwtEx.getCode();
-        }
+        ResponseCode code = extractResponseCode(e);
 
         ApiResponse<ErrorResponse> apiResponse = ApiResponse.error(code, e.getMessage());
         response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
+    }
+
+    private ResponseCode extractResponseCode(RuntimeException e) {
+        return switch (e) {
+            case JwtExpirationException ex -> ex.getCode();
+            case MissingJwtException ex -> ex.getCode();
+            default -> ApiAuthResponseCode.AUTHENTICATION_FAILED;
+        };
+    }
+
+    // 화이트리스트들은(ex, 로그인) 해당 필터를 수행하면 안된다.
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return WHITELIST.stream().anyMatch(path::startsWith);
     }
 }

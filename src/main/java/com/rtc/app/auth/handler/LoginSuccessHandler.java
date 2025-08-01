@@ -44,7 +44,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         String role = userDetail.getAuthorities().stream().findFirst().map(GrantedAuthority::getAuthority).orElse(null);
         LoginResponse loginResponse = authTokenService.issueTokens(userDetail.getId(), userDetail.getEmail(), role);
 
-        String jsonLoginResponse = objectMapper.writeValueAsString(ApiResponse.of(ApiAuthResponseCode.LOGOUT_SUCCESS, loginResponse));
+        String jsonLoginResponse = objectMapper.writeValueAsString(ApiResponse.of(ApiAuthResponseCode.LOGIN_SUCCESS, loginResponse));
         response.getWriter().write(jsonLoginResponse);
     }
 }

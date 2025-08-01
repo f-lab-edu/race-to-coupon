@@ -40,11 +40,7 @@ public class EmailPasswordAuthenticationFilter extends AbstractAuthenticationPro
         String password = loginRequest.getPassword();
 
         UsernamePasswordAuthenticationToken authRequest = UsernamePasswordAuthenticationToken.unauthenticated(email, password);
-        setDetails(request, authRequest);
-        return this.getAuthenticationManager().authenticate(authRequest);
-    }
-
-    protected void setDetails(HttpServletRequest request, UsernamePasswordAuthenticationToken authRequest) {
         authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
+        return this.getAuthenticationManager().authenticate(authRequest);
     }
 }
