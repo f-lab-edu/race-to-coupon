@@ -1,0 +1,12 @@
+= 회원가입 API 문서 작성
+
+== 회원가입 POST /auth/signup API
+
+=== curl
+include::{snippets}/auth-signup/curl-request.adoc[]
+
+=== 요청
+include::{snippets}/auth-signup/http-request.adoc[]
+
+=== 응답
+include::{snippets}/auth-signup/http-response.adoc[]

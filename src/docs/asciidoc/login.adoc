@@ -1,0 +1,12 @@
+= 로그인 API 문서 작성
+
+== 로그인 POST /auth/login API
+
+=== curl
+include::{snippets}/auth-login/curl-request.adoc[]
+
+=== 요청
+include::{snippets}/auth-login/http-request.adoc[]
+
+=== 응답
+include::{snippets}/auth-login/http-response.adoc[]

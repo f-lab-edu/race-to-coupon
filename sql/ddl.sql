@@ -1,12 +1,15 @@
 CREATE TABLE coupon_user (
     coupon_user_id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '사용자 고유 번호',
-    email VARCHAR(255) NOT NULL UNIQUE COMMENT '사용자 로그인 ID(EMAIL)',
+    email VARCHAR(255) NOT NULL COMMENT '사용자 로그인 ID(EMAIL)',
     password VARCHAR(60) NOT NULL COMMENT '사용자 암호(BCrypt 적용)',
-    name VARCHAR(30) NOT NULL UNIQUE COMMENT '닉네임',
+    name VARCHAR(30) NOT NULL COMMENT '닉네임',
     type VARCHAR(10) NOT NULL COMMENT '사용자 타입(유저, 운영자, 파트너)',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '사용자 정보 생성 시간',
     modified_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '사용자 정보 수정 시간'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE INDEX idx_coupon_user_email ON coupon_user (email);
+CREATE INDEX idx_coupon_user_name ON coupon_user (name);
 
 CREATE TABLE coupon_issue (
     coupon_issue_id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '쿠폰 발행 번호',
@@ -25,7 +28,7 @@ CREATE INDEX idx_coupon_issue_userid_usableend_desc ON coupon_issue (coupon_user
 CREATE TABLE coupon_info (
     coupon_info_id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '쿠폰 고유 번호',
     coupon_user_id BIGINT NOT NULL COMMENT '사용자 고유 번호',
-    code VARCHAR(10) UNIQUE COMMENT '쿠폰 입력 코드',
+    code VARCHAR(10) COMMENT '쿠폰 입력 코드',
     title VARCHAR(90) NOT NULL COMMENT '쿠폰 이름 (한글 30자 제한)',
     description VARCHAR(100) COMMENT '쿠폰 설명',
     status VARCHAR(20) NOT NULL COMMENT '쿠폰 상태 (발급, 삭제 등)',

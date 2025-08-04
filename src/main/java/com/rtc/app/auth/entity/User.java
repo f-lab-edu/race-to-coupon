@@ -1,7 +1,7 @@
-package com.rtc.app.account.entity;
+package com.rtc.app.auth.entity;
 
 import com.rtc.app.common.entity.BaseTimeEntity;
-import com.rtc.app.account.type.UserType;
+import com.rtc.app.auth.type.UserType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,4 +30,16 @@ public class User extends BaseTimeEntity {
     @Column(name = "type", nullable = false, length = 10)
     @Enumerated(EnumType.STRING)
     private UserType type;
+
+    // 유저 생성
+    public static User create(String email, String name, String password) {
+        return new User(email, name, password, UserType.USER);
+    }
+
+    private User(String email, String name, String password, UserType type) {
+        this.email = email;
+        this.name = name;
+        this.password = password;
+        this.type = type;
+    }
 }

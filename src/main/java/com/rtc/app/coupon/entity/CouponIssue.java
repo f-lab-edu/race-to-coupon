@@ -2,7 +2,7 @@ package com.rtc.app.coupon.entity;
 
 import com.rtc.app.common.entity.BaseTimeEntity;
 import com.rtc.app.coupon.type.CouponIssueStatus;
-import com.rtc.app.account.entity.User;
+import com.rtc.app.auth.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
