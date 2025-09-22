@@ -1,6 +1,6 @@
 package com.rtc.app.auth.config;
 
-import com.rtc.app.auth.service.query.SecurityQueryService;
+import com.rtc.app.auth.service.UserReadService;
 import com.rtc.app.auth.service.authentication.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class AuthenticationConfig {
 
-    private final SecurityQueryService securityQueryService;
+    private final UserReadService userReadService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -28,7 +28,7 @@ public class AuthenticationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new CustomUserDetailsService(securityQueryService);
+        return new CustomUserDetailsService(userReadService);
     }
 
     @Bean

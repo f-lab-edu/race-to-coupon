@@ -28,9 +28,9 @@ CREATE INDEX idx_coupon_issue_userid_usableend_desc ON coupon_issue (coupon_user
 CREATE TABLE coupon_info (
     coupon_info_id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '쿠폰 고유 번호',
     coupon_user_id BIGINT NOT NULL COMMENT '사용자 고유 번호',
-    code VARCHAR(10) COMMENT '쿠폰 입력 코드',
+    code VARCHAR(10) UNIQUE COMMENT '쿠폰 입력 코드',
     title VARCHAR(90) NOT NULL COMMENT '쿠폰 이름 (한글 30자 제한)',
-    description VARCHAR(100) COMMENT '쿠폰 설명',
+    description VARCHAR(1000) COMMENT '쿠폰 설명 (한글 333자 제한)',
     status VARCHAR(20) NOT NULL COMMENT '쿠폰 상태 (발급, 삭제 등)',
     type VARCHAR(20) NOT NULL COMMENT '상위 타입 (이벤트)',
     sub_type VARCHAR(20) NOT NULL COMMENT '하위 타입 (선착순, 여름맞이 행사)',

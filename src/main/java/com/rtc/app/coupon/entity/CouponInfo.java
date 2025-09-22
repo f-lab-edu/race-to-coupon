@@ -1,5 +1,6 @@
 package com.rtc.app.coupon.entity;
 
+import com.rtc.app.auth.type.UserType;
 import com.rtc.app.common.entity.BaseTimeEntity;
 import com.rtc.app.coupon.type.CouponStatus;
 import com.rtc.app.coupon.type.CouponSubType;
@@ -8,6 +9,7 @@ import com.rtc.app.coupon.type.DiscountType;
 import com.rtc.app.auth.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
@@ -33,10 +35,10 @@ public class CouponInfo extends BaseTimeEntity {
     @Column(name = "code", unique = true, length = 10)
     private String code;
 
-    @Column(name = "title", nullable = false, length = 90)
+    @Column(name = "title", nullable = false, length = 30)
     private String title;
 
-    @Column(name = "description", length = 100)
+    @Column(name = "description", length = 333)
     private String description;
 
     @Enumerated(EnumType.STRING)
@@ -51,12 +53,6 @@ public class CouponInfo extends BaseTimeEntity {
     @Column(name = "sub_type", nullable = false, length = 20)
     private CouponSubType subType;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "discount_type", nullable = false, length = 10, updatable = false)
-    private DiscountType discountType;
-
-    @Column(name = "discount_value", nullable = false, updatable = false)
-    private Integer discountValue;
 
     @Column(name = "total_quantity", nullable = false)
     private Integer totalQuantity;
@@ -64,30 +60,56 @@ public class CouponInfo extends BaseTimeEntity {
     @Column(name = "issued_quantity", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer issuedQuantity;
 
-    /**
-     * 쿠폰 적용 가능 최소 금액
-     * 0인 경우 금액 제한 없이 사용 가능
-     */
-    @Column(name = "min_apply_amount", nullable = false, columnDefinition = "INT DEFAULT 0")
-    private Integer minApplyAmount;
+    @Embedded
+    private DiscountPolicy discountPolicy;
 
-    /**
-     * 쿠폰 적용 가능 최대 금액
-     * 0인 경우 금액 제한 없이 사용 가능
-     */
-    @Column(name = "max_apply_amount", nullable = false, columnDefinition = "INT DEFAULT 0")
-    private Integer maxApplyAmount;
-
-    @Column(name = "validate_days_after_download", nullable = false, updatable = false)
-    private Integer validateDaysAfterDownload;
-
-    @Column(name = "download_start", nullable = false)
-    private LocalDateTime downloadStart;
-
-    @Column(name = "download_end", nullable = false)
-    private LocalDateTime downloadEnd;
+    @Embedded
+    private AvailablePeriod availablePeriod;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "modify_user_id")
     private User modifyUser;
+
+    @Builder
+    private CouponInfo(String code, String title, String description, CouponType type, CouponSubType subType,
+                       DiscountPolicy discountPolicy, AvailablePeriod availablePeriod,
+                       Integer totalQuantity, User createUser, User modifyUser) {
+
+        this.code = code;
+        this.title = title;
+        this.description = description;
+        this.status = CouponStatus.ACTIVATED;
+        this.type = type;
+        this.subType = subType;
+        this.discountPolicy = discountPolicy;
+        this.availablePeriod = availablePeriod;
+        this.totalQuantity = totalQuantity;
+        this.issuedQuantity = 0;
+        this.createUser = createUser;
+        this.modifyUser = modifyUser;
+    }
+
+    // 쿠폰 생성
+    public static CouponInfo create(String code, String title, String description, CouponType type, CouponSubType subType,
+                                    DiscountPolicy discountPolicy, AvailablePeriod availablePeriod,
+                                    Integer totalQuantity, User user) {
+        return CouponInfo.builder()
+                .code(code)
+                .title(title)
+                .description(description)
+                .type(type)
+                .subType(subType)
+                .discountPolicy(discountPolicy)
+                .availablePeriod(availablePeriod)
+                .totalQuantity(totalQuantity)
+                .createUser(user)
+                .modifyUser(user)
+                .build();
+    }
+
+    // 쿠폰 삭제
+    public void deleteCoupon(User user) {
+        this.status = CouponStatus.DELETED;
+        this.modifyUser = user;
+    }
 }

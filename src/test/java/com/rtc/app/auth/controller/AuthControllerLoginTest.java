@@ -1,9 +1,7 @@
 package com.rtc.app.auth.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rtc.app.auth.config.SecurityConfig;
 import com.rtc.app.auth.dto.request.LoginRequest;
-import com.rtc.app.auth.dto.request.SignUpRequest;
 import com.rtc.app.auth.entity.User;
 import com.rtc.app.auth.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;

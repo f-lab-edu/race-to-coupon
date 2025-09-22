@@ -1,7 +1,9 @@
 package com.rtc.app.common.response;
 
 public enum ApiCommonResponseCode implements ResponseCode {
+    SUCCESS(2000000, "SUCCESS"),
     INVALID_PARAMETERS(4000005, "INVALID_PARAMETERS"),
+    NOT_READABLE_REQUEST(4000006, "NOT_READABLE_REQUEST"),
     INTERNAL_ERROR(5000000, "INTERNAL_ERROR");
 
     private final int code;

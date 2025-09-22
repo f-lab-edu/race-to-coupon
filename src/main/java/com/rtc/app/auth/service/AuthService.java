@@ -4,17 +4,19 @@ import com.rtc.app.auth.dto.internal.RefreshTokenWithExpire;
 import com.rtc.app.auth.dto.request.command.SignUpCommand;
 import com.rtc.app.auth.dto.response.SignUpResponse;
 import com.rtc.app.auth.entity.User;
-import com.rtc.app.auth.exception.DuplicationException;
+import com.rtc.app.auth.exception.DuplicateException;
 import com.rtc.app.auth.repository.RefreshTokenRepository;
 import com.rtc.app.auth.repository.UserRepository;
 import com.rtc.app.auth.service.authentication.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class AuthService {
 
@@ -27,14 +29,14 @@ public class AuthService {
         // 시간이 유효한 액세스 토큰을 블랙리스트에 넣으면, 모든 API 요청 마다 해당 토큰이 유효한지 체크 해야 함
         refreshTokenRepository.delete(userId);
     }
-    
+
     public SignUpResponse signUp(SignUpCommand command) {
         if (userRepository.existsByEmail(command.getEmail())) {
-            throw new DuplicationException("이미 존재하는 이메일입니다.");
+            throw new DuplicateException("이미 존재하는 이메일입니다.");
         }
 
         if (userRepository.existsUserByName(command.getName())) {
-            throw new DuplicationException("이미 존재하는 이름입니다.");
+            throw new DuplicateException("이미 존재하는 이름입니다.");
         }
 
         User user = User.create(command.getEmail(), command.getName(), passwordEncoder.encode(command.getPassword()));

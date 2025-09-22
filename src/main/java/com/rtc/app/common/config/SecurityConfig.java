@@ -1,4 +1,4 @@
-package com.rtc.app.auth.config;
+package com.rtc.app.common.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rtc.app.auth.filter.EmailPasswordAuthenticationFilter;
@@ -11,6 +11,7 @@ import com.rtc.app.auth.service.authentication.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -34,8 +35,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/auth/signup").permitAll()
+                        .requestMatchers("/auth/login", "/auth/signup").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/coupons").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/coupons/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)

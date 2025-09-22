@@ -1,4 +1,4 @@
-package com.rtc.app.auth.service.query;
+package com.rtc.app.auth.service;
 
 import com.rtc.app.auth.entity.User;
 import com.rtc.app.auth.repository.UserRepository;
@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 /**
- * security 패키지 전용 쿼리 서비스
+ * 인증 패키지 내부에서 사용
  */
 @Service
 @RequiredArgsConstructor
-public class SecurityQueryService {
+public class UserReadService {
 
     private final UserRepository userRepository;
 
